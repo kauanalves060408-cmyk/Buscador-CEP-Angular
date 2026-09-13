@@ -1,0 +1,52 @@
+.cep-search {
+  max-width: 420px;
+  margin: 48px auto;
+  padding: 24px;
+  font-family: system-ui, sans-serif;
+}
+
+.form {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.form input {
+  flex: 1;
+  padding: 8px 12px;
+  font-size: 1rem;
+}
+
+.form button {
+  padding: 8px 16px;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.form button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.hint {
+  color: #b45309;
+}
+
+.error {
+  color: #b91c1c;
+}
+
+.loading {
+  color: #2563eb;
+}
+
+.result {
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 16px;
+  margin-top: 8px;
+}
+
+.result p {
+  margin: 4px 0;
+}

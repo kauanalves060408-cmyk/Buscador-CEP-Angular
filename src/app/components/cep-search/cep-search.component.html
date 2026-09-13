@@ -1,0 +1,45 @@
+<div class="cep-search">
+  <h1>Buscador de CEP</h1>
+
+  <div class="form">
+    <input
+      type="text"
+      inputmode="numeric"
+      maxlength="8"
+      placeholder="Digite o CEP (somente números)"
+      [value]="cepInput()"
+      (input)="onCepChange($any($event.target).value)"
+    />
+    <button type="button" [disabled]="!cepValido()" (click)="buscar()">
+      Buscar
+    </button>
+  </div>
+
+  @if (!cepValido() && cepInput().length > 0) {
+    <p class="hint">O CEP deve conter 8 dígitos numéricos.</p>
+  }
+
+  @if (enderecoResource.isLoading()) {
+    <p class="loading">Buscando endereço...</p>
+  }
+
+  @if (enderecoResource.error()) {
+    <p class="error">Erro ao consultar o CEP. Verifique sua conexão.</p>
+  }
+
+  @if (naoEncontrado()) {
+    <p class="error">CEP não encontrado.</p>
+  }
+
+  @if (enderecoResource.value(); as endereco) {
+    @if (!endereco.erro) {
+      <div class="result">
+        <p><strong>CEP:</strong> {{ endereco.cep }}</p>
+        <p><strong>Logradouro:</strong> {{ endereco.logradouro }}</p>
+        <p><strong>Bairro:</strong> {{ endereco.bairro }}</p>
+        <p><strong>Cidade:</strong> {{ endereco.localidade }}</p>
+        <p><strong>UF:</strong> {{ endereco.uf }}</p>
+      </div>
+    }
+  }
+</div>
