@@ -1,1 +1,53 @@
 /* You can add global styles to this file, and also import other style files */
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+
+/* Tema escuro (padrão) — gradiente violeta/ciano sobre card quase preto */
+body.tema-escuro {
+  --gradient-start: #4c1d95;
+  --gradient-end: #0891b2;
+  --card-bg: #17172b;
+  --title-color: #f5f3ff;
+  --toggle-bg: rgba(255, 255, 255, 0.08);
+  --input-bg: rgba(255, 255, 255, 0.07);
+  --input-text: #f5f3ff;
+  --input-placeholder: rgba(245, 243, 255, 0.5);
+  --accent: #8b5cf6;
+  --accent-hover: #7c3aed;
+  --btn-disabled-bg: rgba(255, 255, 255, 0.08);
+  --btn-disabled-text: rgba(245, 243, 255, 0.4);
+  --hint-color: #fbbf24;
+  --error-color: #f87171;
+  --result-bg: rgba(255, 255, 255, 0.06);
+  --result-label: #d1c4ff;
+  --result-strong: #ffffff;
+}
+
+/* Tema claro — gradiente mais suave, card branco */
+body.tema-claro {
+  --gradient-start: #a78bfa;
+  --gradient-end: #38bdf8;
+  --card-bg: #ffffff;
+  --title-color: #312e81;
+  --toggle-bg: #f1f5f9;
+  --input-bg: #f8fafc;
+  --input-text: #1e1b4b;
+  --input-placeholder: #94a3b8;
+  --accent: #7c3aed;
+  --accent-hover: #6d28d9;
+  --btn-disabled-bg: #e5e7eb;
+  --btn-disabled-text: #9ca3af;
+  --hint-color: #b45309;
+  --error-color: #b91c1c;
+  --result-bg: #f5f3ff;
+  --result-label: #6d28d9;
+  --result-strong: #312e81;
+}

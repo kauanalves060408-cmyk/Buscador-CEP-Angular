@@ -1,7 +1,9 @@
-import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, effect, inject, signal } from '@angular/core';
+import { DOCUMENT } from '@angular/common';
 import { httpResource } from '@angular/common/http';
 import { AddressService } from '../../services/address.service';
 import { ViaCepResponse } from '../../models/address.model';
+import { InfoEstado, obterInfoEstado } from '../../utils/uf-info';
 
 @Component({
   selector: 'app-cep-search',
@@ -12,6 +14,17 @@ import { ViaCepResponse } from '../../models/address.model';
 })
 export class CepSearchComponent {
   private readonly addressService = inject(AddressService);
+  private readonly document = inject(DOCUMENT);
+
+  // Tema atual (true = escuro). Começa escuro por padrão.
+  readonly temaEscuro = signal<boolean>(true);
+
+  // Efeito colateral: sempre que o tema mudar, aplica a classe no <body>
+  private readonly aplicarTemaNoBody = effect(() => {
+    const escuro = this.temaEscuro();
+    this.document.body.classList.toggle('tema-escuro', escuro);
+    this.document.body.classList.toggle('tema-claro', !escuro);
+  });
 
   // Entrada do usuário (somente dígitos, controlada via signal)
   readonly cepInput = signal<string>('');
@@ -38,6 +51,15 @@ export class CepSearchComponent {
     return !!valor?.erro;
   });
 
+  // Derivado: nome do estado + região a partir da UF do resultado
+  readonly infoEstado = computed<InfoEstado | undefined>(() => {
+    const valor = this.enderecoResource.value();
+    if (!valor || valor.erro) {
+      return undefined;
+    }
+    return obterInfoEstado(valor.uf);
+  });
+
   onCepChange(valorDigitado: string): void {
     const somenteNumeros = valorDigitado.replace(/\D/g, '').slice(0, 8);
     this.cepInput.set(somenteNumeros);
@@ -47,5 +69,9 @@ export class CepSearchComponent {
     if (this.cepValido()) {
       this.cepConfirmado.set(this.cepInput());
     }
+  }
+
+  alternarTema(): void {
+    this.temaEscuro.update((atual) => !atual);
   }
 }

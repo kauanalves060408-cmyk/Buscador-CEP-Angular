@@ -1,45 +1,75 @@
-<div class="cep-search">
-  <h1>Buscador de CEP</h1>
+<div class="page">
+  <div class="card">
+    <div class="card-header">
+      <h1>Consulta CEP</h1>
+      <button
+        type="button"
+        class="theme-toggle"
+        (click)="alternarTema()"
+        [attr.aria-label]="temaEscuro() ? 'Mudar para tema claro' : 'Mudar para tema escuro'"
+      >
+        {{ temaEscuro() ? '☀️' : '🌙' }}
+      </button>
+    </div>
 
-  <div class="form">
-    <input
-      type="text"
-      inputmode="numeric"
-      maxlength="8"
-      placeholder="Digite o CEP (somente números)"
-      [value]="cepInput()"
-      (input)="onCepChange($any($event.target).value)"
-    />
-    <button type="button" [disabled]="!cepValido()" (click)="buscar()">
-      Buscar
-    </button>
-  </div>
+    <div class="form">
+      <input
+        type="text"
+        inputmode="numeric"
+        maxlength="8"
+        placeholder="Digite o CEP (somente números)"
+        [value]="cepInput()"
+        (input)="onCepChange($any($event.target).value)"
+      />
+      <button
+        type="button"
+        class="btn-consultar"
+        [disabled]="!cepValido()"
+        (click)="buscar()"
+      >
+        {{ enderecoResource.isLoading() ? 'Consultando...' : 'Consultar' }}
+      </button>
+    </div>
 
-  @if (!cepValido() && cepInput().length > 0) {
-    <p class="hint">O CEP deve conter 8 dígitos numéricos.</p>
-  }
-
-  @if (enderecoResource.isLoading()) {
-    <p class="loading">Buscando endereço...</p>
-  }
-
-  @if (enderecoResource.error()) {
-    <p class="error">Erro ao consultar o CEP. Verifique sua conexão.</p>
-  }
-
-  @if (naoEncontrado()) {
-    <p class="error">CEP não encontrado.</p>
-  }
-
-  @if (enderecoResource.value(); as endereco) {
-    @if (!endereco.erro) {
-      <div class="result">
-        <p><strong>CEP:</strong> {{ endereco.cep }}</p>
-        <p><strong>Logradouro:</strong> {{ endereco.logradouro }}</p>
-        <p><strong>Bairro:</strong> {{ endereco.bairro }}</p>
-        <p><strong>Cidade:</strong> {{ endereco.localidade }}</p>
-        <p><strong>UF:</strong> {{ endereco.uf }}</p>
-      </div>
+    @if (!cepValido() && cepInput().length > 0) {
+      <p class="hint">O CEP deve conter 8 dígitos numéricos.</p>
     }
-  }
+
+    @if (enderecoResource.error()) {
+      <p class="error">Erro ao consultar o CEP. Verifique sua conexão.</p>
+    }
+
+    @if (naoEncontrado()) {
+      <p class="error">CEP não encontrado.</p>
+    }
+
+    @if (enderecoResource.value(); as endereco) {
+      @if (!endereco.erro) {
+        <div class="result">
+          <div class="result-info">
+            <p><strong>Cep:</strong> {{ endereco.cep }}</p>
+            <p><strong>Uf:</strong> {{ endereco.uf }}</p>
+            @if (endereco.ddd) {
+              <p><strong>Ddd:</strong> {{ endereco.ddd }}</p>
+            }
+            @if (infoEstado(); as info) {
+              <p><strong>Estado:</strong> {{ info.estado }}</p>
+            }
+            <p><strong>Cidade:</strong> {{ endereco.localidade }}</p>
+            @if (infoEstado(); as info) {
+              <p><strong>Região:</strong> {{ info.regiao }}</p>
+            }
+          </div>
+
+          <svg class="pin-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path
+              d="M12 2C7.58 2 4 5.58 4 10c0 5.25 7 12 7.3 12.3.2.2.5.2.7 0C12.3 22 19 15.25 19 10c0-4.42-3.58-8-8-8Z"
+              fill="currentColor"
+            />
+            <circle cx="12" cy="10" r="2.6" fill="var(--card-bg)" />
+          </svg>
+        </div>
+      }
+    }
+  </div>
 </div>

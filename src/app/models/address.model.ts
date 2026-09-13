@@ -4,5 +4,6 @@ export interface ViaCepResponse {
   bairro: string;
   localidade: string;
   uf: string;
+  ddd?: string;
   erro?: boolean;
 }
